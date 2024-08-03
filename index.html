@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies App</title>
+</head>
+<body>
+    <h1>Movies App</h1>
+    <form>
+        <input type="text" id="title" placeholder="Movie Title">
+        <input type="number" id="rating" placeholder="Movie Rating">
+        <button type="submit">Submit</button>
+    </form>
+    <ul></ul>
+    <button id="abcSort">Sort Alphabetically</button>
+    <button id="rateSort">Sort By Rating</button>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script>
+        $('form').on('submit', function(e) {
+            let input = false;
+            e.preventDefault();
+            var title = $('#title').val();
+            var rating = $('#rating').val();
+            //make sure title and rating are valid
+            if($('#rating').val() < 0 || $('#rating').val() > 10) {
+                alert('you must have a rating between 0 and 10')
+            } else if ($('#title').val().length < 2) {
+                alert('you must have a title with at least 2 characters')
+            } else {
+                input = true;
+            }
+
+            if(input === true){
+                $('ul').append(`
+                    <li>${title} : ${rating}
+                        <button>Remove</button>
+                    </li>
+                `);
+            }   
+        });
+        
+        $('ul').on("click", "li button", e => $(e.target).closest('li').remove());
+        // https://stackoverflow.com/a/63694244/25279995        
+
+        $('#abcSort').on('click', () => {
+            $("ul li").sort(abc_sort).appendTo('ul');
+        })
+
+        function abc_sort(a, b) {
+            return ($(b).text().toLowerCase()) < ($(a).text().toLowerCase()) ? 1 : -1;    
+        }
+        // https://stackoverflow.com/a/8838790/25279995
+
+        $('#rateSort').on('click', () => {
+            $('ul li').sort(num_sort).appendTo('ul')
+        })
+        
+        function num_sort(a, b) {
+            let val1 = $(a).get().reverse()
+            let val2 = $(b).get().reverse()
+            return ($(val2).text()) < ($(val1).text()) ? 1 : -1;
+        }
+        // https://stackoverflow.com/a/5347903/25279995
+
+    </script>
+</body>
+</html>
